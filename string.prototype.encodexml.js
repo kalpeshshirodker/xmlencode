@@ -1,19 +1,26 @@
 if (!String.prototype.encodeXml) {
-	Object.defineProperty(String.prototype, 'encodeXml', {
-		configurable : true,
-		writable : true,
-		value : function() {
-			return this.replace(/[<>&'"]/g, function (c) {
-				switch (c) {
-					case '<': return '&lt;';
-					case '>': return '&gt;';
-					case '&': return '&amp;';
-					case '\'': return '&apos;';
-					case '"': return '&quot;';
-				}
+	(function() {
+		var xmlEntitiesMap = {
+			'<': '&lt;',
+			'>': '&gt;',
+			'&': '&amp;',
+			'\'': '&apos;',
+			'"': '&quot;',
+		};
+
+		var fnEncodeXml = function() {
+			return this.replace(/[<>&'"]/g, function(c) {
+				return xmlEntitiesMap[c] || '';
 			});
-		}
-	});			
+		};
+
+		Object.defineProperty(String.prototype, 'encodeXml', {
+			configurable: true,
+			writable: true,
+			value: fnEncodeXml
+		});
+
+	})();
 }
 
 if (!String.prototype.decodeXml) {
