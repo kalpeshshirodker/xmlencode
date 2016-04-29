@@ -1,5 +1,5 @@
 if (!String.prototype.encodeXml) {
-	(function() {
+	(function(){
 		var xmlEntitiesMap = {
 			'<': '&lt;',
 			'>': '&gt;',
@@ -8,20 +8,26 @@ if (!String.prototype.encodeXml) {
 			'"': '&quot;',
 		};
 
-		var fnEncodeXml = function() {
-			return this.replace(/[<>&'"]/g, function(c) {
+		var xmlEntities = Object.keys(xmlEntitiesMap).join('');
+		var xeRegEx = new RegExp('[' + xmlEntities + ']', 'gm');
+		var fnEncodeXml = function(){
+			return this.replace(xeRegEx, function (c) {
 				return xmlEntitiesMap[c] || '';
 			});
 		};
 
 		Object.defineProperty(String.prototype, 'encodeXml', {
-			configurable: true,
-			writable: true,
-			value: fnEncodeXml
+			configurable : true,
+			writable : true,
+			value : fnEncodeXml
 		});
 
 	})();
 }
+
+var str = 'a string with < and > and an ampersand for &, further & is also used to denote <- or ->';
+console.log(str);
+console.log(str.encodeXml());
 
 if (!String.prototype.decodeXml) {
 	(function(){
@@ -39,7 +45,7 @@ if (!String.prototype.decodeXml) {
 			}
 			return str;
 		}
-		
+
 		Object.defineProperty(String.prototype, 'decodeXml', {
 			configurable : true,
 			writable : true,
