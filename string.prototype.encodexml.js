@@ -25,10 +25,6 @@ if (!String.prototype.encodeXml) {
 	})();
 }
 
-var str = 'a string with < and > and an ampersand for &, further & is also used to denote <- or ->';
-console.log(str);
-console.log(str.encodeXml());
-
 if (!String.prototype.decodeXml) {
 	(function(){
 		//use cached div element to perform xmldecode using the DOM
